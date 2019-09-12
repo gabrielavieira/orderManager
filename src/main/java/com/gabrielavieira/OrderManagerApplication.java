@@ -8,9 +8,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.gabrielavieira.domain.Category;
+import com.gabrielavieira.domain.City;
 import com.gabrielavieira.domain.Product;
+import com.gabrielavieira.domain.State;
 import com.gabrielavieira.repositories.CategoryRepository;
+import com.gabrielavieira.repositories.CityRepository;
 import com.gabrielavieira.repositories.ProductRepository;
+import com.gabrielavieira.repositories.StateRepository;
 
 @SpringBootApplication
 public class OrderManagerApplication implements CommandLineRunner {
@@ -20,6 +24,12 @@ public class OrderManagerApplication implements CommandLineRunner {
 	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private StateRepository stateRepository;
+	
+	@Autowired
+	private CityRepository cityRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OrderManagerApplication.class, args);
@@ -43,6 +53,20 @@ public class OrderManagerApplication implements CommandLineRunner {
 		
 		categoryRepository.saveAll(Arrays.asList(computing, office));
 		productRepository.saveAll(Arrays.asList(printer, computer, mouse));
+		
+		State state1 = new State(null, "Minas Gerais");
+		State state2 = new State(null, "São Paulo");
+		
+		City city1 = new City(null, "Uberlândia", state1);
+		City city2 = new City(null, "São Paulo", state2);
+		City city3 = new City(null, "Campinas", state2);
+		
+		state1.getCities().addAll(Arrays.asList(city1));
+		state2.getCities().addAll(Arrays.asList(city2, city3));
+		
+		stateRepository.saveAll(Arrays.asList(state1, state2));
+		cityRepository.saveAll(Arrays.asList(city1, city2, city3));
+		
 	}
 
 }
