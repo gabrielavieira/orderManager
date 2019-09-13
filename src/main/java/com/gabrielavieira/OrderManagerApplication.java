@@ -7,12 +7,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.gabrielavieira.domain.Address;
 import com.gabrielavieira.domain.Category;
 import com.gabrielavieira.domain.City;
+import com.gabrielavieira.domain.Customer;
 import com.gabrielavieira.domain.Product;
 import com.gabrielavieira.domain.State;
+import com.gabrielavieira.domain.enums.CustomerType;
+import com.gabrielavieira.repositories.AddressRepository;
 import com.gabrielavieira.repositories.CategoryRepository;
 import com.gabrielavieira.repositories.CityRepository;
+import com.gabrielavieira.repositories.CustomerRepository;
 import com.gabrielavieira.repositories.ProductRepository;
 import com.gabrielavieira.repositories.StateRepository;
 
@@ -30,6 +35,12 @@ public class OrderManagerApplication implements CommandLineRunner {
 	
 	@Autowired
 	private CityRepository cityRepository;
+	
+	@Autowired
+	private AddressRepository addressRepository;
+	
+	@Autowired
+	private CustomerRepository customerRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OrderManagerApplication.class, args);
@@ -66,6 +77,17 @@ public class OrderManagerApplication implements CommandLineRunner {
 		
 		stateRepository.saveAll(Arrays.asList(state1, state2));
 		cityRepository.saveAll(Arrays.asList(city1, city2, city3));
+		
+		Customer customer1 = new Customer(null, "Gabriela Vieira", "gabriela@gmail.com", "36378912377", CustomerType.FISICAL_PERSON);
+		
+		Address address1 = new Address(null, "Street 1", 12, "","Neighborhood 1", "60540-888", city1, customer1);
+		Address address2 = new Address(null, "Street 2", 55, "","Neighborhood 2", "60540-455", city2, customer1);
+		
+		customer1.getPhones().addAll(Arrays.asList("987788777", "685542211"));
+		customer1.getAddress().addAll(Arrays.asList(address1, address2));
+		
+		customerRepository.saveAll(Arrays.asList(customer1));
+		addressRepository.saveAll(Arrays.asList(address1, address2));
 		
 	}
 
