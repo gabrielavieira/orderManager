@@ -1,5 +1,6 @@
 package com.gabrielavieira;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +9,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.gabrielavieira.domain.Address;
+import com.gabrielavieira.domain.BankSlipPayment;
 import com.gabrielavieira.domain.Category;
 import com.gabrielavieira.domain.City;
+import com.gabrielavieira.domain.CreditCardPayment;
 import com.gabrielavieira.domain.Customer;
+import com.gabrielavieira.domain.Order;
+import com.gabrielavieira.domain.Payment;
 import com.gabrielavieira.domain.Product;
 import com.gabrielavieira.domain.State;
 import com.gabrielavieira.domain.enums.CustomerType;
+import com.gabrielavieira.domain.enums.PaymentState;
 import com.gabrielavieira.repositories.AddressRepository;
 import com.gabrielavieira.repositories.CategoryRepository;
 import com.gabrielavieira.repositories.CityRepository;
 import com.gabrielavieira.repositories.CustomerRepository;
+import com.gabrielavieira.repositories.OrderRepository;
+import com.gabrielavieira.repositories.PaymentRepository;
 import com.gabrielavieira.repositories.ProductRepository;
 import com.gabrielavieira.repositories.StateRepository;
 
@@ -41,6 +49,12 @@ public class OrderManagerApplication implements CommandLineRunner {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OrderManagerApplication.class, args);
@@ -88,6 +102,22 @@ public class OrderManagerApplication implements CommandLineRunner {
 		
 		customerRepository.saveAll(Arrays.asList(customer1));
 		addressRepository.saveAll(Arrays.asList(address1, address2));
+		
+		SimpleDateFormat sdt = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Order order1 = new Order(null, sdt.parse("30/09/2017 10:32"), customer1, address1);
+		Order order2 = new Order(null, sdt.parse("30/10/2017 10:32"), customer1, address2);
+		
+		Payment payment1 = new CreditCardPayment(null, PaymentState.SETTLED, order1, 1);
+		order1.setPayment(payment1);
+		
+		Payment payment2 = new BankSlipPayment(null, PaymentState.CANCELED, order2, sdt.parse("03/11/2017 10:32"), null);
+		order2.setPayment(payment2);
+		
+		customer1.getOrders().addAll(Arrays.asList(order1, order2));
+		
+		orderRepository.saveAll(Arrays.asList(order1, order2));
+		paymentRepository.saveAll(Arrays.asList(payment1, payment2));
 		
 	}
 
