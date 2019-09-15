@@ -15,6 +15,7 @@ import com.gabrielavieira.domain.City;
 import com.gabrielavieira.domain.CreditCardPayment;
 import com.gabrielavieira.domain.Customer;
 import com.gabrielavieira.domain.Order;
+import com.gabrielavieira.domain.OrderItem;
 import com.gabrielavieira.domain.Payment;
 import com.gabrielavieira.domain.Product;
 import com.gabrielavieira.domain.State;
@@ -24,6 +25,7 @@ import com.gabrielavieira.repositories.AddressRepository;
 import com.gabrielavieira.repositories.CategoryRepository;
 import com.gabrielavieira.repositories.CityRepository;
 import com.gabrielavieira.repositories.CustomerRepository;
+import com.gabrielavieira.repositories.OrderItemRepository;
 import com.gabrielavieira.repositories.OrderRepository;
 import com.gabrielavieira.repositories.PaymentRepository;
 import com.gabrielavieira.repositories.ProductRepository;
@@ -55,6 +57,9 @@ public class OrderManagerApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OrderManagerApplication.class, args);
@@ -65,19 +70,19 @@ public class OrderManagerApplication implements CommandLineRunner {
 		Category computing = new Category(null, "Computing");
 		Category office = new Category(null, "Office");
 		
-		Product printer = new Product(null, "Printer", 2000.00);
-		Product computer = new Product(null, "Computer", 800.00);
-		Product mouse = new Product(null, "Mouse", 80.00);
+		Product product1 = new Product(null, "Printer", 2000.00);
+		Product product2 = new Product(null, "Computer", 800.00);
+		Product product3 = new Product(null, "Mouse", 80.00);
 		
-		computing.getProducts().addAll(Arrays.asList(printer, computer, mouse));
-		office.getProducts().addAll(Arrays.asList(printer));
+		computing.getProducts().addAll(Arrays.asList(product1, product2, product3));
+		office.getProducts().addAll(Arrays.asList(product1));
 		
-		printer.getCategories().addAll(Arrays.asList(computing, office));
-		computer.getCategories().addAll(Arrays.asList(computing));
-		mouse.getCategories().addAll(Arrays.asList(computing));
+		product1.getCategories().addAll(Arrays.asList(computing, office));
+		product2.getCategories().addAll(Arrays.asList(computing));
+		product3.getCategories().addAll(Arrays.asList(computing));
 		
 		categoryRepository.saveAll(Arrays.asList(computing, office));
-		productRepository.saveAll(Arrays.asList(printer, computer, mouse));
+		productRepository.saveAll(Arrays.asList(product1, product2, product3));
 		
 		State state1 = new State(null, "Minas Gerais");
 		State state2 = new State(null, "São Paulo");
@@ -119,6 +124,18 @@ public class OrderManagerApplication implements CommandLineRunner {
 		orderRepository.saveAll(Arrays.asList(order1, order2));
 		paymentRepository.saveAll(Arrays.asList(payment1, payment2));
 		
+		OrderItem orderItem1 =  new OrderItem(order1, product1, 0.0, 1, 2000.00);
+		OrderItem orderItem2 =  new OrderItem(order1, product3, 0.0, 2, 80.00);
+		OrderItem orderItem3 =  new OrderItem(order2, product2, 100.0, 1, 800.00);
+		
+		order1.getItems().addAll(Arrays.asList(orderItem1, orderItem2));
+		order2.getItems().addAll(Arrays.asList(orderItem2));
+		
+		product1.getItems().addAll(Arrays.asList(orderItem1));
+		product2.getItems().addAll(Arrays.asList(orderItem3));
+		product3.getItems().addAll(Arrays.asList(orderItem2));
+		
+		orderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2, orderItem3));
 	}
 
 }
