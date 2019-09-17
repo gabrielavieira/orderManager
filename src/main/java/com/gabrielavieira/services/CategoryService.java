@@ -24,5 +24,10 @@ public class CategoryService {
 		entity.setId(null);
 		return repository.save(entity);
 	}
+	
+	public Category update(Category entity) {
+		find(entity.getId());
+		return repository.save(entity);
+	}
 
 }
