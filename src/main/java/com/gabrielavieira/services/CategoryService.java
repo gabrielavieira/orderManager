@@ -3,10 +3,12 @@ package com.gabrielavieira.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.gabrielavieira.domain.Category;
 import com.gabrielavieira.repositories.CategoryRepository;
+import com.gabrielavieira.services.exceptions.DataIntegrityException;
 import com.gabrielavieira.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -28,6 +30,15 @@ public class CategoryService {
 	public Category update(Category entity) {
 		find(entity.getId());
 		return repository.save(entity);
+	}
+	
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repository.deleteById(id);
+		}catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Cannot delete a category that has products associated with it");
+		}
 	}
 
 }
