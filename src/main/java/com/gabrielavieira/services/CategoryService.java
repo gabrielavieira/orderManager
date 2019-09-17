@@ -1,5 +1,6 @@
 package com.gabrielavieira.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,10 @@ public class CategoryService {
 		}catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Cannot delete a category that has products associated with it");
 		}
+	}
+	
+	public List<Category> findAll(){
+		return repository.findAll();
 	}
 
 }
