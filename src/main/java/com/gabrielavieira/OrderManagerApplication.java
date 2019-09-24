@@ -67,21 +67,31 @@ public class OrderManagerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Category computing = new Category(null, "Computing");
-		Category office = new Category(null, "Office");
+		Category c1 = new Category(null, "Computing");
+		Category c2 = new Category(null, "Office");
+		Category c3 = new Category(null, "Gardening");
+		Category c4 = new Category(null, "Perfumery");
+		Category c5 = new Category(null, "c5");
+		Category c6 = new Category(null, "c6");
+		Category c7 = new Category(null, "c7");
+		Category c8 = new Category(null, "c8");
+		Category c9 = new Category(null, "c9");
+		Category c10 = new Category(null, "c10");
+		Category c11 = new Category(null, "c11");
+		Category c12 = new Category(null, "c12");
 		
 		Product product1 = new Product(null, "Printer", 2000.00);
 		Product product2 = new Product(null, "Computer", 800.00);
 		Product product3 = new Product(null, "Mouse", 80.00);
 		
-		computing.getProducts().addAll(Arrays.asList(product1, product2, product3));
-		office.getProducts().addAll(Arrays.asList(product1));
+		c1.getProducts().addAll(Arrays.asList(product1, product2, product3));
+		c2.getProducts().addAll(Arrays.asList(product1));
 		
-		product1.getCategories().addAll(Arrays.asList(computing, office));
-		product2.getCategories().addAll(Arrays.asList(computing));
-		product3.getCategories().addAll(Arrays.asList(computing));
+		product1.getCategories().addAll(Arrays.asList(c1, c2));
+		product2.getCategories().addAll(Arrays.asList(c1));
+		product3.getCategories().addAll(Arrays.asList(c1));
 		
-		categoryRepository.saveAll(Arrays.asList(computing, office));
+		categoryRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12));
 		productRepository.saveAll(Arrays.asList(product1, product2, product3));
 		
 		State state1 = new State(null, "Minas Gerais");
@@ -136,6 +146,7 @@ public class OrderManagerApplication implements CommandLineRunner {
 		product3.getItems().addAll(Arrays.asList(orderItem2));
 		
 		orderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2, orderItem3));
+		
 	}
 
 }
