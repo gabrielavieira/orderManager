@@ -9,9 +9,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.gabrielavieira.domain.Address;
+import com.gabrielavieira.domain.City;
 import com.gabrielavieira.domain.Customer;
+import com.gabrielavieira.domain.enums.CustomerType;
 import com.gabrielavieira.dto.CustomerDTO;
+import com.gabrielavieira.dto.CustomerNewDTO;
+import com.gabrielavieira.repositories.AddressRepository;
 import com.gabrielavieira.repositories.CustomerRepository;
 import com.gabrielavieira.services.exceptions.DataIntegrityException;
 import com.gabrielavieira.services.exceptions.ObjectNotFoundException;
@@ -21,15 +27,21 @@ public class CustomerService {
 	
 	@Autowired
 	private CustomerRepository repository;
-
+	
+	@Autowired
+	private AddressRepository addressRepository;
+	
 	public Customer find(Integer id) {
 		Optional<Customer> customer = repository.findById(id);
 		return customer.orElseThrow(() -> new ObjectNotFoundException("Object not found."));
 	}
 	
+	@Transactional
 	public Customer insert(Customer entity) {
 		entity.setId(null);
-		return repository.save(entity);
+		entity = repository.save(entity);
+		addressRepository.saveAll(entity.getAddress());
+		return entity;
 	}
 	
 	public Customer update(Customer entity) {
@@ -58,6 +70,32 @@ public class CustomerService {
 	
 	public Customer fromDTO(CustomerDTO objDTO) {
 		return new Customer(objDTO.getId(), objDTO.getName(), objDTO.getEmail(), null, null);
+	}
+	
+	public Customer fromDTO(CustomerNewDTO objDTO) {
+		City city = new City(objDTO.getCityId(), null, null);
+		
+		Customer customer = new Customer(null, 
+										objDTO.getName(), 
+										objDTO.getEmail(), 
+										objDTO.getCpfOrCnpj(), 
+										CustomerType.toEnum(objDTO.getCustomerType()));
+		
+		Address address = new Address(null, 
+				objDTO.getStreet(), 
+				objDTO.getNumber(), 
+				objDTO.getComplement(), 
+				objDTO.getNeighborhood(), 
+				objDTO.getCep(), 
+				city, 
+				customer);
+		
+		customer.addPhoneNumber(objDTO.getPhone1());
+		customer.addPhoneNumber(objDTO.getPhone2());
+		customer.addPhoneNumber(objDTO.getPhone3());
+		customer.getAddress().add(address);
+		
+		return customer;
 	}
 	
 	private void updateData(Customer oldObj, Customer newObj) {

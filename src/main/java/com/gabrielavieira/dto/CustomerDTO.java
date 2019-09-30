@@ -1,12 +1,12 @@
 package com.gabrielavieira.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-
-import org.hibernate.validator.constraints.Length;
-
+import com.gabrielavieira.domain.Address;
 import com.gabrielavieira.domain.Customer;
 
 public class CustomerDTO implements Serializable {
@@ -14,14 +14,12 @@ public class CustomerDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
-	
-	@NotEmpty(message = "Name is required")
-	@Length(min = 5, max = 120, message = "The name must be between 5 and 120 characters.")
 	private String name;
-	
-	@NotEmpty(message = "Email is required")
-	@Email(message = "Email is not valid")
 	private String email;
+	private String cpfOrCnpj;
+	private Integer customerType;
+	private List<Address> address = new ArrayList<Address>();
+	private Set<String> phones = new HashSet<>();
 	
 	public CustomerDTO() {}
 	
@@ -29,6 +27,10 @@ public class CustomerDTO implements Serializable {
 		this.id = customer.getId();
 		this.name = customer.getName();
 		this.email = customer.getEmail();
+		this.cpfOrCnpj = customer.getCpfOrCnpj();
+		this.customerType = customer.getCustomerType().getCode();
+		this.address = customer.getAddress();
+		this.phones = customer.getPhones();
 	}
 
 	public Integer getId() {
@@ -53,6 +55,38 @@ public class CustomerDTO implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getCpfOrCnpj() {
+		return cpfOrCnpj;
+	}
+	
+	public void setCpfOrCnpj(String cpfOrCnpj) {
+		this.cpfOrCnpj = cpfOrCnpj;
+	}
+	
+	public Integer getCustomerType() {
+		return customerType;
+	}
+	
+	public void setCustomerType(Integer customerType) {
+		this.customerType = customerType;
+	}
+	
+	public List<Address> getAddress() {
+		return address;
+	}
+	
+	public void setAddress(List<Address> address) {
+		this.address = address;
+	}
+	
+	public Set<String> getPhones() {
+		return phones;
+	}
+	
+	public void setPhones(Set<String> phones) {
+		this.phones = phones;
 	}
 
 }

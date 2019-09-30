@@ -119,6 +119,14 @@ public class Customer implements Serializable {
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
+	
+	public boolean addPhoneNumber(String phone) {
+		if(phone != null && phone != "") {
+			this.phones.add(phone);
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public int hashCode() {
