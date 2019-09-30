@@ -53,7 +53,7 @@ public class Customer implements Serializable {
 		this.name = name;
 		this.email = email;
 		this.cpfOrCnpj = cpfOrCnpj;
-		this.customerType = customerType.getCode();
+		this.customerType = customerType != null ? customerType.getCode() : null;
 	}
 
 	public Integer getId() {
