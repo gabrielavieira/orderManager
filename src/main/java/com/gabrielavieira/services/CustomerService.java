@@ -99,7 +99,10 @@ public class CustomerService {
 	}
 	
 	private void updateData(Customer oldObj, Customer newObj) {
-		oldObj.setName(newObj.getName());
-		oldObj.setEmail(newObj.getEmail());
+		if(newObj.getName() != null && newObj.getName() != "")
+			oldObj.setName(newObj.getName());
+		
+		if(newObj.getEmail() != null && newObj.getEmail() != "")
+			oldObj.setEmail(newObj.getEmail());
 	}
 }

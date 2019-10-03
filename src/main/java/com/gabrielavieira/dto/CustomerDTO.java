@@ -8,7 +8,9 @@ import java.util.Set;
 
 import com.gabrielavieira.domain.Address;
 import com.gabrielavieira.domain.Customer;
+import com.gabrielavieira.services.validation.CustomerUpdate;
 
+@CustomerUpdate
 public class CustomerDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -80,19 +80,33 @@ public class OrderManagerApplication implements CommandLineRunner {
 		Category c11 = new Category(null, "c11");
 		Category c12 = new Category(null, "c12");
 		
-		Product product1 = new Product(null, "Printer", 2000.00);
-		Product product2 = new Product(null, "Computer", 800.00);
-		Product product3 = new Product(null, "Mouse", 80.00);
+		Product p1 = new Product(null, "Printer", 2000.00);
+		Product p2 = new Product(null, "Computer", 800.00);
+		Product p3 = new Product(null, "Mouse", 80.00);
+		Product p4 = new Product(null, "Mesa de escritório", 300.00);
+		Product p5 = new Product(null, "Toalha", 50.00);
+		Product p6 = new Product(null, "Colcha", 200.00);
+		Product p7 = new Product(null, "TV true color", 1200.00);
+		Product p8 = new Product(null, "Roçadeira", 800.00);
+		Product p9 = new Product(null, "Abajour", 100.00);
+		Product p10 = new Product(null, "Pendente", 180.00);
+		Product p11 = new Product(null, "Shampoo", 90.00);
 		
-		c1.getProducts().addAll(Arrays.asList(product1, product2, product3));
-		c2.getProducts().addAll(Arrays.asList(product1));
+		c1.getProducts().addAll(Arrays.asList(p1, p2, p3));
+		c2.getProducts().addAll(Arrays.asList(p1));
+		c2.getProducts().addAll(Arrays.asList(p2, p4));
+		c3.getProducts().addAll(Arrays.asList(p5, p6));
+		c4.getProducts().addAll(Arrays.asList(p1, p2, p3, p7));
+		c5.getProducts().addAll(Arrays.asList(p8));
+		c6.getProducts().addAll(Arrays.asList(p9, p10));
+		c7.getProducts().addAll(Arrays.asList(p11));
 		
-		product1.getCategories().addAll(Arrays.asList(c1, c2));
-		product2.getCategories().addAll(Arrays.asList(c1));
-		product3.getCategories().addAll(Arrays.asList(c1));
+		p1.getCategories().addAll(Arrays.asList(c1, c2));
+		p2.getCategories().addAll(Arrays.asList(c1));
+		p3.getCategories().addAll(Arrays.asList(c1));
 		
 		categoryRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12));
-		productRepository.saveAll(Arrays.asList(product1, product2, product3));
+		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 		
 		State state1 = new State(null, "Minas Gerais");
 		State state2 = new State(null, "São Paulo");
@@ -134,16 +148,16 @@ public class OrderManagerApplication implements CommandLineRunner {
 		orderRepository.saveAll(Arrays.asList(order1, order2));
 		paymentRepository.saveAll(Arrays.asList(payment1, payment2));
 		
-		OrderItem orderItem1 =  new OrderItem(order1, product1, 0.0, 1, 2000.00);
-		OrderItem orderItem2 =  new OrderItem(order1, product3, 0.0, 2, 80.00);
-		OrderItem orderItem3 =  new OrderItem(order2, product2, 100.0, 1, 800.00);
+		OrderItem orderItem1 =  new OrderItem(order1, p1, 0.0, 1, 2000.00);
+		OrderItem orderItem2 =  new OrderItem(order1, p3, 0.0, 2, 80.00);
+		OrderItem orderItem3 =  new OrderItem(order2, p2, 100.0, 1, 800.00);
 		
 		order1.getItems().addAll(Arrays.asList(orderItem1, orderItem2));
 		order2.getItems().addAll(Arrays.asList(orderItem2));
 		
-		product1.getItems().addAll(Arrays.asList(orderItem1));
-		product2.getItems().addAll(Arrays.asList(orderItem3));
-		product3.getItems().addAll(Arrays.asList(orderItem2));
+		p1.getItems().addAll(Arrays.asList(orderItem1));
+		p2.getItems().addAll(Arrays.asList(orderItem3));
+		p3.getItems().addAll(Arrays.asList(orderItem2));
 		
 		orderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2, orderItem3));
 		
