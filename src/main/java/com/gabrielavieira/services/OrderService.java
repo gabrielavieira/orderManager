@@ -1,5 +1,6 @@
 package com.gabrielavieira.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +19,9 @@ public class OrderService {
 	public Order find(Integer id) {
 		Optional<Order> order = orderRepository.findById(id);
 		return order.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado, id: " + id));
+	}
+
+	public List<Order> findAll() {
+		return orderRepository.findAll();
 	}
 }
