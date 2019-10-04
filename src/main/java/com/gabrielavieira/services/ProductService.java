@@ -2,6 +2,7 @@ package com.gabrielavieira.services;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import com.gabrielavieira.domain.Category;
 import com.gabrielavieira.domain.Product;
 import com.gabrielavieira.repositories.CategoryRepository;
 import com.gabrielavieira.repositories.ProductRepository;
+import com.gabrielavieira.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ProductService {
@@ -22,6 +24,11 @@ public class ProductService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	public Product find(Integer id) {
+		Optional<Product> obj = repository.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado, ID: " + id));
+	}
 	
 	public Page<Product> search(String name, 
 								List<Integer> categoriesIds, 
