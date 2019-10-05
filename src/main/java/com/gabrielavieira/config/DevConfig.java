@@ -11,15 +11,19 @@ import org.springframework.context.annotation.Profile;
 import com.gabrielavieira.services.DBService;
 
 @Configuration
-@Profile("test")
-public class TestConfig {
+@Profile("dev")
+public class DevConfig {
 	
 	@Autowired
 	private DBService dbService;
 	
+	@Value("${spring.jpa.hibernate.ddl-auto}")
+	private String strategy;
+	
 	@Bean
 	public void instantiateDatabase() throws ParseException {
-		dbService.instantiateTestDatabase();
+		if("create".equals(strategy))
+			dbService.instantiateTestDatabase();
 	}
 
 }
